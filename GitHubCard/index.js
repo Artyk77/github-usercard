@@ -3,15 +3,35 @@
            https://api.github.com/users/<your name>
 */
 
-const promise = axios.get('https://api.github.com/users/hamidoudiallo96');
-promise
-.then(item =>{
-  console.log(item);
-})
-.catch(item =>{
-  console.log('ERROR: Try Again Dude !');
-});
+const username = "Artyk77";
+const promise = axios.get(`https://api.github.com/users/${username}`);
 
+ const cards = document.querySelector('.cards');
+
+  promise
+  .then(data =>{
+    console.log(data,'Get Data');
+    myProfile(data.data);
+  }) 
+
+  .catch(data =>{
+    console.log(data,'ERROR: Try Again Dude !');
+  });
+  const followersArray = ["tetondan","dustinmyers","justsml","luishrd","bigknell"];
+  
+  followersArray.forEach(item =>{
+    const promise1 = axios.get(`https://api.github.com/users/${item}`);
+ 
+    promise1
+  .then(data =>{
+    console.log(data,'Get Data');
+    myProfile(data.data);
+    
+  }) 
+  .catch(data =>{
+    console.log(data,'ERROR: Try Again Dude !');
+  });
+});
 
 /* Step 2: Inspect and study the data coming back, this is YOUR 
    github info! You will need to understand the structure of this 
@@ -19,6 +39,7 @@ promise
 
    Skip to Step 3.
 */
+
 
 /* Step 4: Pass the data received from Github into your function, 
            create a new component and add it to the DOM as a child of .cards
@@ -34,7 +55,7 @@ promise
           user, and adding that card to the DOM.
 */
 
-const followersArray = [];
+
 
 /* Step 3: Create a function that accepts a single object as its only argument,
           Using DOM methods and properties, create a component that will return the following DOM element:
@@ -63,3 +84,55 @@ const followersArray = [];
   luishrd
   bigknell
 */
+const myProfile = (obj) => {
+  // element invoke
+ 
+  const card = document.createElement('div');
+  const image = document.createElement('img');
+  const cardInfo = document.createElement('div');
+  const head3 = document.createElement('h3');
+  const para1 = document.createElement('p');
+  const para2 = document.createElement('p');
+  const para3 = document.createElement('p');
+  const anchor = document.createElement('a');
+  const para4 = document.createElement('p');
+  const para5 = document.createElement('p');
+  const para6 = document.createElement('p');
+
+
+  // classes
+
+  card.classList.add('card');
+  cardInfo.classList.add('card-info');
+  head3.classList.add('name');
+  para1.classList.add('username');
+
+  // add append:
+  card.appendChild(image);
+  card.appendChild(cardInfo);
+  cardInfo.appendChild(head3);
+  cardInfo.appendChild(para1);
+  cardInfo.appendChild(para2);
+  cardInfo.appendChild(para3);
+  para3.appendChild(anchor);
+  cardInfo.appendChild(para4);
+  cardInfo.appendChild(para5);
+  cardInfo.appendChild(para6);
+
+
+  // setting image src
+  console.log(obj.avatar_url)
+  image.src = `${obj.avatar_url}`;
+
+  // adding text:
+  head3.textContent = `${obj.name}`;
+  anchor.textContent = `${obj.html_url}`;
+  para2.textContent = `Location: ${obj.location}`;
+  para3.textContent = "Profile:";
+  para4.textContent = `Followers: ${obj.followers} `;
+  para5.textContent = `Following: ${obj.following} `;
+  para6.textContent = `Bio: ${obj.bio} `;
+
+  
+  return document.querySelector('.cards').appendChild(card);
+};
